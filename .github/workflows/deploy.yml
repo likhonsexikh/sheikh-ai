@@ -1,0 +1,53 @@
+name: Deploy to Production
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        type: choice
+        options:
+          - production
+          - staging
+        default: 'staging'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy notification
+        run: |
+          echo "Deploying Sheikh AI to ${{ github.event.inputs.environment || 'production' }}"
+          echo "Version: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+
+      # Add your deployment steps here
+      # Examples:
+      # - Deploy to cloud provider (AWS, GCP, Azure)
+      # - Update Kubernetes manifests
+      # - Trigger CD pipeline
+      # - Run database migrations
+      
+      - name: Deployment placeholder
+        run: |
+          echo "🚀 Deployment workflow is ready!"
+          echo "Configure your deployment steps in .github/workflows/deploy.yml"
+          echo ""
+          echo "Common deployment methods:"
+          echo "  • SSH to server and pull latest Docker images"
+          echo "  • Use kubectl to update Kubernetes deployments"
+          echo "  • Deploy to cloud platforms (Heroku, Vercel, Railway)"
+          echo "  • Use Terraform/Ansible for infrastructure updates"
+
+      - name: Deployment status
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "Environment: ${{ github.event.inputs.environment || 'production' }}"
